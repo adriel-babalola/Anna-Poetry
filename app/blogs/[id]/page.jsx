@@ -1,6 +1,6 @@
 'use client'
 import { assets, blog_data } from '@/assets/images/assets'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation' // 1. Import useParams
 import Footer from '@/components/Footer'
@@ -9,16 +9,21 @@ import Link from 'next/link'
 
 const Page = () => { // 2. Remove 'async' and capitalize component name 'Page'
 
-  const params = useParams(); // 3. Get params using the hook
-  const id = params.id; // Get the ID
+  const [data, setData] = useState(null)
 
-  // 4. Find the blog post directly (no need for useState or useEffect)
-  const data = blog_data.find((blog) => blog.id === Number(id));
+  useEffect(() => {
+        const fetchBlogData = async () => {
+            try {
+                const response = await axios.get('/api/blog');
+                setBlogs(response.data.blogs);
+                console.log(response.data.blogs);
+            } catch (error) {
+                console.error("Error fetching blogs:", error);
+            }
+        };
+        fetchBlogData();
+    }, []); 
 
-  // Optional: Handle case where data isn't found
-  if (!data) {
-    return <div>Blog post not found</div>
-  }
 
   return (data ? <>
     <div className='bg-gray-200 py-5 px-5 md:px-12 lg:px-28'>
