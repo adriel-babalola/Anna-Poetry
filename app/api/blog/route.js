@@ -2,6 +2,7 @@ import { ConnectDB } from "@/lib/config/db";
 import BlogModel from "@/lib/model/BlogModel";
 import { writeFile } from "fs/promises";
 const { NextResponse } = require("next/server");
+const fs = require('fs/promises')
 
 let isConnected = false;
 
@@ -11,20 +12,29 @@ const LoadDB = async () => {
         isConnected = true;
     }
 }
-
 // API End Point to get all Blogs
 export async function GET(request) {
-    const blogId = request.nextUrl.searchParams.get('id')
-    
-    const blogs = await BlogModel.find({})
-    return NextResponse.json({blogs})  
-} 
- 
+    try {
+        await LoadDB();
+        const blogId = request.nextUrl.searchParams.get('id')
+        if (blogId) {
+            const blog = await BlogModel.findById(blogId)
+            return NextResponse.json(blog)
+        } else {
+            const blogs = await BlogModel.find({})
+            return NextResponse.json({ blogs })
+        }
+    } catch (error) {
+        console.error('Error fetching blogs:', error);
+        return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+}
+
 // API EndPoint for uploading Blogs
 export async function POST(request) {
     try {
         await LoadDB();
-        
+
         const formData = await request.formData()
         const timeStamp = Date.now();
 
@@ -50,9 +60,19 @@ export async function POST(request) {
 
         console.log('blog saved')
 
-        return NextResponse.json({success: true, msg: 'Blog Added'})
-    } catch(error) {
+        return NextResponse.json({ success: true, msg: 'Blog Added' })
+    } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({success: false, msg: error.message}, {status: 500})
+        return NextResponse.json({ success: false, msg: error.message }, { status: 500 })
     }
+}
+
+// Creating API EndpOINT TO DELETE BLOG
+export async function DELETE(request){
+    const id = await request.nextUrl.searchParams.get('id')
+    const blog = await BlogModel.findById(id);
+
+    fs.unlink(`./public${blog.image}`, () => {})
+    await BlogModel.findByIdAndDelete(id)
+    return NextResponse.json({msg: 'Blog Deleted'})   
 }
