@@ -13,8 +13,8 @@ body {
 p{
   font-family: var(--font-lora);
 }
-.scrollbar-hide::webkit-scrollbar{
-   display: none
+.scrollbar-hide::-webkit-scrollbar {
+   display: none;
 }
 
 .blog-content {
