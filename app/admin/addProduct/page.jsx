@@ -2,7 +2,7 @@
 import { assets } from '@/assets/images/assets'
 import axios from 'axios'
 import Image from 'next/image'
-import React, { useState, useEffect, dynamic } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import dynamic from 'next/dynamic'
 
