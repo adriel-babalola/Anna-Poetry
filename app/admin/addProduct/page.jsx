@@ -4,15 +4,16 @@ import axios from 'axios'
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
+import QuillEditor from '@/components/QuillEditor'
 
 const Page = () => {
   const [image, setImage] = useState(false)
   const [data, setData] = useState({
     title: "",
     description: "",
-    category: "Startup",
-    author: "Adriel Babalola",
-    authorImg: "/authorImg.png"
+    category: "Midnight Thoughts",
+    author: "Onimisi Anna",
+    authorImg: "/profile_rose.jpg"
   })
 
   useEffect(() => {
@@ -43,9 +44,9 @@ const Page = () => {
       setData({
         title: "",
         description: "",
-        category: "Startup",
-        author: "Adriel Babalola",
-        authorImg: "/authorImg.png"
+        category: "Midnight Thoughts",
+        author: "Onimisi Anna",
+        authorImg: "/profile_rose.jpg"
       })
 
     }
@@ -64,15 +65,20 @@ const Page = () => {
         <p className='text-xl mt-4'>Blog Title</p>
         <input name='title' onChange={onChangeHandler} value={data.title} className='w-full sm:w-[500px] mt-4 px-4 py-3 border outline-0' type="text" placeholder='Type Here' required />
         <p className='text-xl mt-4'>Blog Description</p>
-        <textarea name='description' onChange={onChangeHandler} value={data.description} className='w-full sm:w-[500px] mt-4 px-4 py-3 border outline-0' type="text" placeholder='Write content here' rows={6} required />
+        <div className='mt-4'>
+          <QuillEditor 
+            value={data.description} 
+            onChange={(content) => setData(data => ({ ...data, description: content }))}
+          />
+        </div>
         <p className='text-xl mt-4'>Blog Category</p>
         <select name="category" onChange={onChangeHandler} value={data.category} className='w-40 mt-4 px-4 py-3 border text-gray-500'>
-          <option value="Startup">Startup</option>
-          <option value="Technology">Technology</option>
-          <option value="Lifestyle">Lifestyle</option>
+          <option value="Midnight Thoughts">Midnight Thoughts</option>
+          <option value="Unfiltered">Unfiltered</option>
+          <option value="Healing">Healing</option>
         </select>
         <br />
-        <button type='submit' className='mt-8 h-12 bg-black text-white w-40'>ADD</button>
+        <button type='submit' className='my-8 h-12 bg-black text-white w-40'>ADD</button>
       </form>
     </>
   )

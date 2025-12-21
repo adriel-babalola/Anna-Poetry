@@ -33,7 +33,8 @@ const Page = () => {
     <div className='bg-gray-200 py-5 px-5 md:px-12 lg:px-28'>
       <div className='flex justify-between items-center'>
         <Link href='/'>
-        <Image src={assets.logo} width={180} alt='' className='w-[130px] sm:w-auto' />
+          <Image src={assets.cover} width={255} alt='logo' className='w-[140px] mt-2 sm:w-auto'/>
+        {/* <Image src={assets.logo} width={180} alt='' className='w-[130px] sm:w-auto' /> */}
         </Link>
         <button className='flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000]'>Get Started
           <Image src={assets.arrow} alt='' />
@@ -42,36 +43,43 @@ const Page = () => {
 
       <div className='text-center my-24 '>
         <h1 className='text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto'>{data.title}</h1>
-        <Image src={data.authorImg} className='mx-auto mt-6 border border-white rounded-full ' width={60} height={60} alt='' />
+        <Image src={data.authorImg} className='mx-auto mt-6 border w-15 h-15 border-white rounded-full ' width={60} height={60} alt='' />
         <p className='mt-1 pb-2 text-lg max-w-[740px] mx-auto'>{data.author}</p>
       </div>
 
 
     </div>
     <div className='mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10'>
-      <Image className='border-4 border-white' src={data.image} alt='' width={1280} height={720} priority loading="eager" />
-      {/* <h1 className='my-8 text-[26px] font-semibold'>Introduction : </h1> */}
-      <div className='blog-content' dangerouslySetInnerHTML={{__html:data.description}}></div>
-      {/* <h3 className='my-5 text-[18px] font-semibold'>Step 1 : Lorem ipsum dolor sit amet consectetur adipisicing elit. </h3>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-      <h3 className='my-5 text-[18px] font-semibold'>Step 2 : Lorem ipsum dolor sit amet consectetur adipisicing elit. </h3>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-      <h3 className='my-5 text-[18px] font-semibold'>Step 3 : Lorem ipsum dolor sit amet consectetur adipisicing elit. </h3>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-    <h3 className='my-5 text-[18px] font-semibold'>Conclusion: </h3>
-      <p className='my-3'> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla ea magnam architecto iste accusamus vitae cumque at natus, dolores voluptate ducimus sunt magni odio debitis quas fuga voluptatibus adipisci omnis! Beatae laborum rem quasi ducimus ratione eveniet aliquid libero voluptate maiores unde, dolorem sequi labore tempora dolore fuga adipisci maxime, expedita eius.</p>
-    */}
+      <Image className='border-4 border-white h-100 object-center object-cover' src={data.image} alt='' width={1000} height={300} priority loading="eager" />
 
-   <div className='my-24'>
+      <div className='blog-content' dangerouslySetInnerHTML={{__html:data.description}}></div>
+    
+   <div className='mb-24 -mt-5'>
     <p className='text-black font font-semibold my-4'>Share this article on social media</p>
-    <div className='flex'>
-      <Image src={assets.facebook_icon} width={50} alt=''/>
-      <Image src={assets.twitter_icon} width={50} alt=''/>
-      <Image src={assets.googleplus_icon} width={50} alt=''/>
-    </div>
+    <div className='flex items-center gap-4 py-5'>
+        {/* Substack Icon */}
+        <a href="#" className='flex rounded-full items-center justify-center w-10 h-10 border-2 border-black bg-white shadow-[-3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[-5px_5px_0px_0px_rgba(0,0,0,1)] transition-all'>
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z" />
+          </svg>
+        </a>
+
+        {/* Instagram Icon */}
+        <a href="#" className='flex items-center rounded-full justify-center w-10 h-10 border-2 border-black bg-white shadow-[-3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[-5px_5px_0px_0px_rgba(0,0,0,1)] transition-all'>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+
+        {/* TikTok Icon */}
+        <a href="#" className='flex items-center rounded-full justify-center w-10 h-10 border-2 border-black bg-white shadow-[-3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[-5px_5px_0px_0px_rgba(0,0,0,1)] transition-all'>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+          </svg>
+        </a>
+      </div>
    </div>
     </div>
     <Footer />

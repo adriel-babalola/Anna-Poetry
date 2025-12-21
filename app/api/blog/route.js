@@ -67,6 +67,54 @@ export async function POST(request) {
     }
 }
 
+// API Endpoint for updating Blogs
+export async function PUT(request) {
+    try {
+        await LoadDB();
+
+        const formData = await request.formData()
+        const blogId = formData.get('id')
+        
+        const blog = await BlogModel.findById(blogId)
+        
+        let imgUrl = blog.image // Keep existing image by default
+
+        // Check if new image is provided
+        const image = formData.get('image')
+        if (image && image.size > 0) {
+            // Delete old image
+            fs.unlink(`./public${blog.image}`, () => {})
+            
+            // Save new image
+            const timeStamp = Date.now();
+            const imageByteData = await image.arrayBuffer()
+            const buffer = Buffer.from(imageByteData)
+            const path = `./public/${timeStamp}_${image.name}`
+
+            await writeFile(path, buffer);
+            imgUrl = `/${timeStamp}_${image.name}`
+        }
+
+        const blogData = {
+            title: `${formData.get('title')}`,
+            description: `${formData.get('description')}`,
+            category: `${formData.get('category')}`,
+            author: `${formData.get('author')}`,
+            image: `${imgUrl}`,
+            authorImg: `${formData.get('authorImg')}`
+        }
+
+        await BlogModel.findByIdAndUpdate(blogId, blogData)
+
+        console.log('blog updated')
+
+        return NextResponse.json({ success: true, msg: 'Blog Updated' })
+    } catch (error) {
+        console.error('Error:', error);
+        return NextResponse.json({ success: false, msg: error.message }, { status: 500 })
+    }
+}
+
 // Creating API EndpOINT TO DELETE BLOG
 export async function DELETE(request){
     const id = await request.nextUrl.searchParams.get('id')
