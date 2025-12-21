@@ -5,7 +5,9 @@ import Image from 'next/image'
 import { useRouter, useParams } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import QuillEditor from '@/components/QuillEditor'
+import dynamic from 'next/dynamic'
+
+const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false })
 
 const Page = () => {
   const router = useRouter()

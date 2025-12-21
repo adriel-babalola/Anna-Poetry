@@ -2,9 +2,11 @@
 import { assets } from '@/assets/images/assets'
 import axios from 'axios'
 import Image from 'next/image'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, dynamic } from 'react'
 import { toast } from 'react-toastify'
-import QuillEditor from '@/components/QuillEditor'
+import dynamic from 'next/dynamic'
+
+const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false })
 
 const Page = () => {
   const [image, setImage] = useState(false)
