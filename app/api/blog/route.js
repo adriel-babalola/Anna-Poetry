@@ -8,8 +8,13 @@ let isConnected = false;
 
 const LoadDB = async () => {
     if (!isConnected) {
-        await ConnectDB();
-        isConnected = true;
+        try {
+            await ConnectDB();
+            isConnected = true;
+        } catch (error) {
+            console.error('Database connection failed:', error);
+            throw error;
+        }
     }
 }
 // API End Point to get all Blogs
