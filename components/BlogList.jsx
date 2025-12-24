@@ -11,7 +11,6 @@ const BlogList = () => {
             try {
                 const response = await axios.get('/api/blog');
                 setBlogs(response.data.blogs);
-                console.log(response.data.blogs);
             } catch (error) {
                 console.error("Error fetching blogs:", error);
             }
