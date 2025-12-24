@@ -30,7 +30,7 @@ const Header = () => {
 
       <div className='text-center mt-20 sm:mt-20 mb-5'>
         <h1 className='text-2xl sm:text-4xl md:text-5xl font-medium'>The Realest Lines Live Here</h1>
-        <p className='mt-6 sm:mt-10 max-w-185 mx-auto text-xs sm:text-sm md:text-base px-2'>"Humanity is so adaptable... Truly amazing, what people can get used to, as long as there are a few compensations." [The Handmaid's Tale]</p>
+        <p className='mt-6 sm:mt-10 max-w-185 mx-auto text-xs sm:text-sm md:text-base px-2'>&quot;Humanity is so adaptable... Truly amazing, what people can get used to, as long as there are a few compensations.&quot; <i>[The Handmaid&quot;s Tale]</i> </p>
         <form onSubmit={onSubmitHandler} className='flex sm:flex-row justify-between max-w-125 mx-auto mt-8 sm:mt-10 border border-black shadow-[-7px_7px_0px_#000000]' action="">
           <input onChange={(e) => { setEmail(e.target.value) }} value={email} type="email" placeholder='Enter your email' className='pl-4 py-2 sm:py-4 outline-none text-sm'/>
           <button type='submit' className='border-t-0 border-l border-black py-2 sm:py-4 px-3 sm:px-8 active:bg-gray-600 active:text-white text-sm sm:text-sm'>Subscribe</button>
