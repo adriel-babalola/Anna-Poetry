@@ -68,7 +68,7 @@ const page = () => {
       </div>
 
       {/* Personal Message Section */}
-      <div className='max-w-4xl mt-16 bg-white border border-black p-8 shadow-[-5px_5px_0px_#000000]'>
+      <div className='max-w-4xl mt-16 mb-10 bg-white border border-black p-8 shadow-[-5px_5px_0px_#000000]'>
         <p className='text-gray-700 text-lg'>
           This was supposed to be your birthday present, but hey — better late than never. So consider this a combo gift: happy belated birthday and Merry Christmas! 🎁
         </p>

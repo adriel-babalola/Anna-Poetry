@@ -98,8 +98,8 @@ const Page = () => {
 
   return (
     <>
-      <form onSubmit={onSubmitHandler} className='pt-5 px-5 sm:pt-12 sm:pl-16'>
-        <p className='text-xl'>Update Thumbnail</p>
+      <form onSubmit={onSubmitHandler} className='pt-5 px-4 sm:pt-12 sm:pl-16 pb-8'>
+        <p className='text-lg sm:text-xl'>Update Thumbnail</p>
         <label htmlFor="image">
           <Image 
             className='mt-4 cursor-pointer' 
@@ -111,31 +111,31 @@ const Page = () => {
         </label>
         <input onChange={(e) => { setImage(e.target.files[0]) }} type="file" id="image" hidden />
         
-        <p className='text-xl mt-4'>Blog Title</p>
+        <p className='text-lg sm:text-xl mt-4'>Blog Title</p>
         <input 
           name='title' 
           onChange={onChangeHandler} 
           value={data.title} 
-          className='w-full sm:w-[500px] mt-4 px-4 py-3 border outline-0' 
+          className='w-full max-w-[500px] mt-4 px-4 py-3 border outline-0 text-sm sm:text-base' 
           type="text" 
           placeholder='Type Here' 
           required 
         />
         
-        <p className='text-xl mt-4'>Blog Description</p>
-        <div className='mt-4'>
+        <p className='text-lg sm:text-xl mt-4'>Blog Description</p>
+        <div className='mt-4 w-full'>
           <QuillEditor 
             value={data.description} 
             onChange={(content) => setData(data => ({ ...data, description: content }))}
           />
         </div>
         
-        <p className='text-xl mt-4'>Blog Category</p>
+        <p className='text-lg sm:text-xl mt-4'>Blog Category</p>
         <select 
           name="category" 
           onChange={onChangeHandler} 
           value={data.category} 
-          className='w-40 mt-4 px-4 py-3 border text-gray-500'
+          className='w-full max-w-xs mt-4 px-4 py-3 border text-gray-500 text-sm sm:text-base'
         >
           <option value="Midnight Thoughts">Midnight Thoughts</option>
           <option value="Unfiltered">Unfiltered</option>
@@ -143,17 +143,17 @@ const Page = () => {
         </select>
         <br />
         
-        <div className='flex gap-4 my-8'>
+        <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 my-8'>
           <button 
             type='submit' 
-            className='h-12 bg-black text-white w-40 hover:bg-gray-800'
+            className='h-12 bg-black text-white w-full sm:w-40 hover:bg-gray-800 text-sm sm:text-base'
           >
             UPDATE
           </button>
           <button 
             type='button' 
             onClick={() => router.back()}
-            className='h-12 bg-gray-500 text-white w-40 hover:bg-gray-600'
+            className='h-12 bg-gray-500 text-white w-full sm:w-40 hover:bg-gray-600 text-sm sm:text-base'
           >
             CANCEL
           </button>

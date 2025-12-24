@@ -40,23 +40,23 @@ const Page = () => {
 
 
   return (
-    <div className='flex-1 pt-5 px-5 sm:pt-12 sm:pl-16'>
-      <h1>All Blogs</h1>
-      <div className='relative h-auto max-h-[80vh] max-w-[990px] overflow-x-auto mt-4 border border-gray-400 scrollbar-hide'>
-        <table className='w-full text-sm text-gray-500'>
-          <thead className='text-sm text-gray-700 text-left uppercase bg-gray-50'>
+    <div className='flex-1 pt-5 px-4 sm:pt-12 sm:pl-16 pb-8'>
+      <h1 className='text-lg sm:text-xl font-bold mb-4'>All Blogs</h1>
+      <div className='relative h-auto max-h-[80vh] w-full overflow-x-auto mt-4 border border-gray-400 scrollbar-hide'>
+        <table className='w-full text-xs sm:text-sm text-gray-500'>
+          <thead className='text-xs sm:text-sm text-gray-700 text-left uppercase bg-gray-50'>
             <tr>
-              <th scope='col' className='hidden sm:block px-6 py-3'>Author Name</th>
-              <th scope='col' className='px-6 py-3'>Blog Title</th>
-              <th scope='col' className='px-6 py-3'>Date</th>
-              <th scope='col' className='px-6 py-3'>Action</th>
+              <th scope='col' className='hidden sm:block px-3 sm:px-6 py-3'>Author Name</th>
+              <th scope='col' className='px-3 sm:px-6 py-3'>Blog Title</th>
+              <th scope='col' className='px-3 sm:px-6 py-3'>Date</th>
+              <th scope='col' className='px-3 sm:px-6 py-3'>Action</th>
             </tr>
           </thead>
           <tbody>
             {blogs.map((item) => {
               return (
                 <BlogTableItem
-                  key={item._id} // ✅ FIXED: Use unique ID
+                  key={item._id}
                   mongoId={item._id}
                   title={item.title}
                   author={item.author}
