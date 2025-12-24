@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const lora = localFont({
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
       <title>The Realest Poet</title>
       <body className="antialiased">
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
