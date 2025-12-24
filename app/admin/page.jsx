@@ -17,7 +17,7 @@ const page = () => {
         </p>
         <div className='w-24 h-1 bg-black mb-6'></div>
         <p className='text-lg text-gray-600 max-w-2xl leading-relaxed'>
-          Your poems deserve to be read. This is your space to share your voice with the world. Manage your verses, connect with your readers, and let your poetry shine. Every word you've written matters.
+          Your poems deserve to be read. This is your space to share your voice with the world. Manage your verses, connect with your readers, and let your poetry shine. Every word you&apos;ve written matters.
         </p>
       </div>
 
