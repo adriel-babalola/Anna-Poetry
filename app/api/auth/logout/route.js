@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server'
+import { applyCORS, handleCORSPreflight, verifyCORS } from '@/lib/cors'
+
+export async function OPTIONS(request) {
+    return handleCORSPreflight(request)
+}
 
 export async function POST(req) {
+    // Check CORS
+    if (!verifyCORS(req)) {
+        const response = NextResponse.json(
+            { success: false, message: 'CORS policy violation' },
+            { status: 403 }
+        )
+        return applyCORS(response, req.headers.get('origin') || '')
+    }
+
     try {
         const response = NextResponse.json(
             { success: true, message: 'Logout successful' },
@@ -12,12 +26,13 @@ export async function POST(req) {
             expires: new Date(0)
         })
         
-        return response
+        return applyCORS(response, req.headers.get('origin') || '')
     } catch (error) {
         console.error('Logout error:', error)
-        return NextResponse.json(
+        const response = NextResponse.json(
             { success: false, message: 'Server error' },
             { status: 500 }
         )
+        return applyCORS(response, req.headers.get('origin') || '')
     }
 }

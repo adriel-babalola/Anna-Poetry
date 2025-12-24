@@ -26,6 +26,7 @@ const courier = localFont({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${lora.variable} ${courier.variable}`}>
+      <title>The Realest Poet</title>
       <body className="antialiased">
         {children}
       </body>

@@ -3,8 +3,22 @@ import AdminModel from '@/lib/model/AdminModel'
 import { generateToken } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
+import { applyCORS, handleCORSPreflight, verifyCORS } from '@/lib/cors'
+
+export async function OPTIONS(request) {
+    return handleCORSPreflight(request)
+}
 
 export async function POST(req) {
+    // Check CORS
+    if (!verifyCORS(req)) {
+        const response = NextResponse.json(
+            { success: false, message: 'CORS policy violation' },
+            { status: 403 }
+        )
+        return applyCORS(response, req.headers.get('origin') || '')
+    }
+
     try {
         await ConnectDB()
         
@@ -12,30 +26,33 @@ export async function POST(req) {
 
         // Validation
         if (!email || !password) {
-            return NextResponse.json(
+            const response = NextResponse.json(
                 { success: false, message: 'Please provide email and password' },
                 { status: 400 }
             )
+            return applyCORS(response, req.headers.get('origin') || '')
         }
 
         // Find admin by email
         const admin = await AdminModel.findOne({ email: email.toLowerCase() })
         
         if (!admin) {
-            return NextResponse.json(
+            const response = NextResponse.json(
                 { success: false, message: 'Invalid email or password' },
                 { status: 401 }
             )
+            return applyCORS(response, req.headers.get('origin') || '')
         }
         
         // Check password
         const isPasswordValid = await bcrypt.compare(password, admin.password)
         
         if (!isPasswordValid) {
-            return NextResponse.json(
+            const response = NextResponse.json(
                 { success: false, message: 'Invalid email or password' },
                 { status: 401 }
             )
+            return applyCORS(response, req.headers.get('origin') || '')
         }
 
         // Generate token
@@ -63,12 +80,13 @@ export async function POST(req) {
             maxAge: 7 * 24 * 60 * 60 // 7 days in seconds
         })
 
-        return response
+        return applyCORS(response, req.headers.get('origin') || '')
     } catch (error) {
         console.error('Login error:', error)
-        return NextResponse.json(
+        const response = NextResponse.json(
             { success: false, message: 'Server error: ' + error.message },
             { status: 500 }
         )
+        return applyCORS(response, req.headers.get('origin') || '')
     }
 }

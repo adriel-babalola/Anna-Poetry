@@ -1,6 +1,7 @@
 import { ConnectDB } from "@/lib/config/db";
 import BlogModel from "@/lib/model/BlogModel";
 import { writeFile } from "fs/promises";
+import { applyCORS, handleCORSPreflight, verifyCORS } from "@/lib/cors";
 const { NextResponse } = require("next/server");
 const fs = require('fs/promises')
 
@@ -17,26 +18,48 @@ const LoadDB = async () => {
         }
     }
 }
+
+export async function OPTIONS(request) {
+    return handleCORSPreflight(request)
+}
+
 // API End Point to get all Blogs
 export async function GET(request) {
+    // Check CORS
+    if (!verifyCORS(request)) {
+        const response = NextResponse.json(
+            { success: false, message: 'CORS policy violation' },
+            { status: 403 }
+        )
+        return applyCORS(response, request.headers.get('origin') || '')
+    }
+
     try {
         await LoadDB();
         const blogId = request.nextUrl.searchParams.get('id')
-        if (blogId) {
-            const blog = await BlogModel.findById(blogId)
-            return NextResponse.json(blog)
-        } else {
-            const blogs = await BlogModel.find({})
-            return NextResponse.json({ blogs })
-        }
+        const response = blogId 
+            ? NextResponse.json(await BlogModel.findById(blogId))
+            : NextResponse.json({ blogs: await BlogModel.find({}) })
+        
+        return applyCORS(response, request.headers.get('origin') || '')
     } catch (error) {
         console.error('Error fetching blogs:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        const response = NextResponse.json({ error: error.message }, { status: 500 })
+        return applyCORS(response, request.headers.get('origin') || '')
     }
 }
 
 // API EndPoint for uploading Blogs
 export async function POST(request) {
+    // Check CORS
+    if (!verifyCORS(request)) {
+        const response = NextResponse.json(
+            { success: false, message: 'CORS policy violation' },
+            { status: 403 }
+        )
+        return applyCORS(response, request.headers.get('origin') || '')
+    }
+
     try {
         await LoadDB();
 
@@ -65,15 +88,26 @@ export async function POST(request) {
 
         console.log('blog saved')
 
-        return NextResponse.json({ success: true, msg: 'Blog Added' })
+        const response = NextResponse.json({ success: true, msg: 'Blog Added' })
+        return applyCORS(response, request.headers.get('origin') || '')
     } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({ success: false, msg: error.message }, { status: 500 })
+        const response = NextResponse.json({ success: false, msg: error.message }, { status: 500 })
+        return applyCORS(response, request.headers.get('origin') || '')
     }
 }
 
 // API Endpoint for updating Blogs
 export async function PUT(request) {
+    // Check CORS
+    if (!verifyCORS(request)) {
+        const response = NextResponse.json(
+            { success: false, message: 'CORS policy violation' },
+            { status: 403 }
+        )
+        return applyCORS(response, request.headers.get('origin') || '')
+    }
+
     try {
         await LoadDB();
 
@@ -113,19 +147,38 @@ export async function PUT(request) {
 
         console.log('blog updated')
 
-        return NextResponse.json({ success: true, msg: 'Blog Updated' })
+        const response = NextResponse.json({ success: true, msg: 'Blog Updated' })
+        return applyCORS(response, request.headers.get('origin') || '')
     } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({ success: false, msg: error.message }, { status: 500 })
+        const response = NextResponse.json({ success: false, msg: error.message }, { status: 500 })
+        return applyCORS(response, request.headers.get('origin') || '')
     }
 }
 
 // Creating API EndpOINT TO DELETE BLOG
 export async function DELETE(request){
-    const id = await request.nextUrl.searchParams.get('id')
-    const blog = await BlogModel.findById(id);
+    // Check CORS
+    if (!verifyCORS(request)) {
+        const response = NextResponse.json(
+            { success: false, message: 'CORS policy violation' },
+            { status: 403 }
+        )
+        return applyCORS(response, request.headers.get('origin') || '')
+    }
 
-    fs.unlink(`./public${blog.image}`, () => {})
-    await BlogModel.findByIdAndDelete(id)
-    return NextResponse.json({msg: 'Blog Deleted'})   
+    try {
+        const id = await request.nextUrl.searchParams.get('id')
+        const blog = await BlogModel.findById(id);
+
+        fs.unlink(`./public${blog.image}`, () => {})
+        await BlogModel.findByIdAndDelete(id)
+        
+        const response = NextResponse.json({msg: 'Blog Deleted'})
+        return applyCORS(response, request.headers.get('origin') || '')
+    } catch (error) {
+        console.error('Error:', error);
+        const response = NextResponse.json({ success: false, msg: error.message }, { status: 500 })
+        return applyCORS(response, request.headers.get('origin') || '')
+    }
 }
