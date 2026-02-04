@@ -2,14 +2,16 @@
 import { assets } from '@/assets/images/assets'
 import axios from 'axios'
 import Image from 'next/image'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { toast } from 'react-toastify'
 import dynamic from 'next/dynamic'
 
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false })
 
 const Page = () => {
+  const editorRef = useRef(null)
   const [image, setImage] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -30,30 +32,39 @@ const Page = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
+    setIsSubmitting(true)
 
-    const formData = new FormData()
-    formData.append('title', data.title)
-    formData.append('description', data.description)
-    formData.append('category', data.category)
-    formData.append('author', data.author)
-    formData.append('authorImg', data.authorImg)
-    formData.append('image', image)
+    try {
+      const formData = new FormData()
+      formData.append('title', data.title)
+      formData.append('description', data.description)
+      formData.append('category', data.category)
+      formData.append('author', data.author)
+      formData.append('authorImg', data.authorImg)
+      formData.append('image', image)
 
-    const response = await axios.post('/api/blog', formData)
-    if (response.data.success) {
-      toast.success(response.data.msg)
-      setImage(false)
-      setData({
-        title: "",
-        description: "",
-        category: "Midnight Thoughts",
-        author: "Onimisi Anna",
-        authorImg: "/profile_rose.jpg"
-      })
-
-    }
-    else {
-      toast.error('Error')
+      const response = await axios.post('/api/blog', formData)
+      if (response.data.success) {
+        toast.success(response.data.msg)
+        setImage(false)
+        setData({
+          title: "",
+          description: "",
+          category: "Midnight Thoughts",
+          author: "Onimisi Anna",
+          authorImg: "/profile_rose.jpg"
+        })
+        // Clear the editor
+        if (editorRef.current) {
+          editorRef.current.clear()
+        }
+      } else {
+        toast.error('Error')
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.msg || 'Error creating blog')
+    } finally {
+      setIsSubmitting(false)
     }
   }
   return (
@@ -69,6 +80,7 @@ const Page = () => {
         <p className='text-lg sm:text-xl mt-4'>Blog Description</p>
         <div className='mt-4 w-full'>
           <QuillEditor 
+            ref={editorRef}
             value={data.description} 
             onChange={(content) => setData(data => ({ ...data, description: content }))}
           />
@@ -80,7 +92,17 @@ const Page = () => {
           <option value="Healing">Healing</option>
         </select>
         <br />
-        <button type='submit' className='my-8 h-12 bg-black text-white w-full max-w-xs text-sm sm:text-base'>ADD</button>
+        <button 
+          type='submit' 
+          disabled={isSubmitting}
+          className={`my-8 h-12 w-full max-w-xs text-sm sm:text-base transition-all ${
+            isSubmitting 
+              ? 'bg-gray-400 text-gray-600 cursor-not-allowed opacity-70' 
+              : 'bg-black text-white hover:bg-gray-800'
+          }`}
+        >
+          {isSubmitting ? '...Adding' : 'ADD'}
+        </button>
       </form>
     </>
   )

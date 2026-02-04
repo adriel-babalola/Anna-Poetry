@@ -6,6 +6,7 @@ import { useRouter, useParams } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import dynamic from 'next/dynamic'
+import LoadingSpinner from '@/components/adminComponents/LoadingSpinner'
 
 const QuillEditor = dynamic(() => import('@/components/QuillEditor'), { ssr: false })
 
@@ -16,6 +17,7 @@ const Page = () => {
 
   const [image, setImage] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -61,6 +63,7 @@ const Page = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
+    setIsSubmitting(true)
 
     const formData = new FormData()
     formData.append('id', blogId)
@@ -85,15 +88,13 @@ const Page = () => {
       }
     } catch (error) {
       toast.error(error.response?.data?.msg || 'Error updating blog')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   if (loading) {
-    return (
-      <div className='pt-5 px-5 sm:pt-12 sm:pl-16'>
-        <p className='text-xl'>Loading blog...</p>
-      </div>
-    )
+    return <LoadingSpinner />
   }
 
   return (
@@ -146,14 +147,24 @@ const Page = () => {
         <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 my-8'>
           <button 
             type='submit' 
-            className='h-12 bg-black text-white w-full sm:w-40 hover:bg-gray-800 text-sm sm:text-base'
+            disabled={isSubmitting}
+            className={`h-12 w-full sm:w-40 text-sm sm:text-base transition-all ${
+              isSubmitting 
+                ? 'bg-gray-400 text-gray-600 cursor-not-allowed opacity-70' 
+                : 'bg-black text-white hover:bg-gray-800'
+            }`}
           >
-            UPDATE
+            {isSubmitting ? '...Updating' : 'UPDATE'}
           </button>
           <button 
             type='button' 
             onClick={() => router.back()}
-            className='h-12 bg-gray-500 text-white w-full sm:w-40 hover:bg-gray-600 text-sm sm:text-base'
+            disabled={isSubmitting}
+            className={`h-12 w-full sm:w-40 text-sm sm:text-base transition-all ${
+              isSubmitting 
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-70' 
+                : 'bg-gray-500 text-white hover:bg-gray-600'
+            }`}
           >
             CANCEL
           </button>

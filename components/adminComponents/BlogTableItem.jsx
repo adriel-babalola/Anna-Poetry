@@ -5,7 +5,17 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const BlogTableItem = ({ authorImg, title, author, date, deleteBlog, mongoId}) => {
-const BlogDate = new Date(date)
+  const BlogDate = new Date(date)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      await deleteBlog(mongoId)
+    } finally {
+      setIsDeleting(false)
+    }
+  }
 
   return (
     <tr className='bg-white border-b text-xs sm:text-sm'>
@@ -24,8 +34,16 @@ const BlogDate = new Date(date)
         <Link href={`/admin/editBlog/${mongoId}`} className='px-2 sm:px-3 py-1 bg-white text-black border text-xs sm:text-sm cursor-pointer hover:bg-gray-800 hover:text-white transition whitespace-nowrap'>
           Edit
         </Link>
-        <button onClick={() => { deleteBlog(mongoId) }} className='px-2 sm:px-3 py-1 bg-black text-white border text-xs sm:text-sm cursor-pointer hover:bg-gray-700 transition whitespace-nowrap'>
-          Delete
+        <button 
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className={`px-2 sm:px-3 py-1 text-xs sm:text-sm border whitespace-nowrap transition ${
+            isDeleting
+              ? 'bg-gray-600 text-white cursor-not-allowed opacity-70'
+              : 'bg-black text-white cursor-pointer hover:bg-gray-700'
+          }`}
+        >
+          {isDeleting ? '...' : 'Delete'}
         </button>
       </td>
     </tr>

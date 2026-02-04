@@ -1,11 +1,19 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 
-const QuillEditor = ({ value, onChange }) => {
+const QuillEditor = forwardRef(({ value, onChange }, ref) => {
   const editorRef = useRef(null)
   const quillRef = useRef(null)
+
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      if (quillRef.current) {
+        quillRef.current.setContents([])
+      }
+    }
+  }))
 
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -35,11 +43,17 @@ const QuillEditor = ({ value, onChange }) => {
         onChange(content)
       })
     }
-
-    return () => {
-      // Cleanup on unmount
-    }
   }, [onChange])
+
+  // Update editor content when value prop changes
+  useEffect(() => {
+    if (quillRef.current && value !== undefined) {
+      // Only update if the content is different to avoid unnecessary updates
+      if (quillRef.current.root.innerHTML !== value) {
+        quillRef.current.root.innerHTML = value
+      }
+    }
+  }, [value])
 
   return (
     <div className='w-full z-1  sm:w-[500px]'>
@@ -75,6 +89,8 @@ const QuillEditor = ({ value, onChange }) => {
       `}</style>
     </div>
   )
-}
+})
+
+QuillEditor.displayName = 'QuillEditor'
 
 export default QuillEditor
