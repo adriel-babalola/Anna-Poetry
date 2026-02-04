@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div className='flex sm:pt-0 pt-6 justify-around flex-col gap-2 right-0 sm:gap-0 sm:flex-row bg-black  items-center'>
       <span className='text-white text-2xl'>TheRealestPoet</span>
-      <p className='text-sm text-white '>All rights reserved. Copyright © 2025 @therealestpoet</p>
+      <p className='text-sm text-white '>All rights reserved. Copyright © 2026 @therealestpoet</p>
       <div className='flex items-center gap-4 py-5'>
         {/* Substack Icon */}
         <a href="#" className='flex rounded-full items-center justify-center w-10 h-10 border-2 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-all'>
