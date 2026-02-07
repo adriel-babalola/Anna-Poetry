@@ -1,8 +1,26 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { assets } from '@/assets/images/assets'
 import Image from 'next/image'
+
+const AdminCard = ({ href, icon, title, description }) => {
+  const [clicked, setClicked] = useState(false)
+  return (
+    <Link href={href} className='group' onClick={() => setClicked(true)}>
+      <div className='bg-white border border-black p-6 shadow-[-5px_5px_0px_#000000] hover:shadow-[-8px_8px_0px_#000000] transition duration-200 h-full'>
+        <div className='flex items-center gap-3 mb-4'>
+          <Image src={icon} alt={title} width={32} />
+          <h3 className='text-xl font-bold text-gray-900'>{title}</h3>
+          {clicked && (
+            <div className='ml-auto w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin' />
+          )}
+        </div>
+        <p className='text-gray-600 text-sm'>{description}</p>
+      </div>
+    </Link>
+  )
+}
 
 const page = () => {
   return (
@@ -27,43 +45,28 @@ const page = () => {
         
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           {/* Add Blog Card */}
-          <Link href='/admin/addProduct' className='group'>
-            <div className='bg-white border border-black p-6 shadow-[-5px_5px_0px_#000000] hover:shadow-[-8px_8px_0px_#000000] transition duration-200 h-full'>
-              <div className='flex items-center gap-3 mb-4'>
-                <Image src={assets.add_icon} alt='Add' width={32} />
-                <h3 className='text-xl font-bold text-gray-900'>Create Poem</h3>
-              </div>
-              <p className='text-gray-600 text-sm'>
-                Write and publish a new poem to share with your audience
-              </p>
-            </div>
-          </Link>
+          <AdminCard
+            href='/admin/addProduct'
+            icon={assets.add_icon}
+            title='Create Poem'
+            description='Write and publish a new poem to share with your audience'
+          />
 
           {/* Blog List Card */}
-          <Link href='/admin/blogList' className='group'>
-            <div className='bg-white border border-black p-6 shadow-[-5px_5px_0px_#000000] hover:shadow-[-8px_8px_0px_#000000] transition duration-200 h-full'>
-              <div className='flex items-center gap-3 mb-4'>
-                <Image src={assets.blog_icon} alt='Blog' width={32} />
-                <h3 className='text-xl font-bold text-gray-900'>All Poems</h3>
-              </div>
-              <p className='text-gray-600 text-sm'>
-                View, edit, and manage all your published poems
-              </p>
-            </div>
-          </Link>
+          <AdminCard
+            href='/admin/blogList'
+            icon={assets.blog_icon}
+            title='All Poems'
+            description='View, edit, and manage all your published poems'
+          />
 
           {/* Subscriptions Card */}
-          <Link href='/admin/subscriptions' className='group'>
-            <div className='bg-white border border-black p-6 shadow-[-5px_5px_0px_#000000] hover:shadow-[-8px_8px_0px_#000000] transition duration-200 h-full'>
-              <div className='flex items-center gap-3 mb-4'>
-                <Image src={assets.email_icon} alt='Email' width={32} />
-                <h3 className='text-xl font-bold text-gray-900'>Subscribers</h3>
-              </div>
-              <p className='text-gray-600 text-sm'>
-                Connect with your readers and manage email subscriptions
-              </p>
-            </div>
-          </Link>
+          <AdminCard
+            href='/admin/subscriptions'
+            icon={assets.email_icon}
+            title='Subscribers'
+            description='Connect with your readers and manage email subscriptions'
+          />
         </div>
       </div>
 

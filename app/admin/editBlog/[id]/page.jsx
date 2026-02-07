@@ -108,6 +108,7 @@ const Page = () => {
             src={image ? URL.createObjectURL(image) : data.image} 
             width={140} 
             height={100}
+            unoptimized
           />
         </label>
         <input onChange={(e) => { setImage(e.target.files[0]) }} type="file" id="image" hidden />

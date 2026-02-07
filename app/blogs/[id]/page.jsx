@@ -44,14 +44,14 @@ const Page = () => {
 
       <div className='text-center my-12 sm:my-24 '>
         <h1 className='text-2xl sm:text-4xl md:text-5xl font-semibold max-w-175 mx-auto px-2'>{data.title}</h1>
-        <Image src={data.authorImg} className='mx-auto mt-4 sm:mt-6 border w-12 h-12 sm:w-15 sm:h-15 border-white rounded-full' width={60} height={60} alt='' />
+        <Image src={data.authorImg} className='mx-auto mt-4 sm:mt-6 border w-12 h-12 sm:w-15 sm:h-15 border-white rounded-full' width={60} height={60} alt='' unoptimized={data.authorImg?.startsWith('data:')} />
         <p className='mt-1 pb-2 text-sm sm:text-lg max-w-185 mx-auto'>{data.author}</p>
       </div>
 
 
     </div>
     <div className='mx-4 sm:mx-5 max-w-200 md:mx-auto -mt-12.5 sm:-mt-25 mb-10 pb-8'>
-      <Image className='border-4 border-white h-auto sm:h-100 object-center object-cover' src={data.image} alt='' width={1000} height={300} priority loading="eager" />
+      <Image className='border-4 border-white h-auto sm:h-100 object-center object-cover' src={data.image} alt='' width={1000} height={300} priority loading="eager" unoptimized={data.image?.startsWith('data:')} />
 
       <div className='blog-content text-sm sm:text-base' dangerouslySetInnerHTML={{ __html: data.description }}></div>
 

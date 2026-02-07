@@ -8,7 +8,7 @@ const BlogItem = ({title, description, category, image, id}) => {
     <div className='w-full max-w-[330px] sm:max-w-[300px] bg-white border border-black hover:shadow-[-7px_7px_0px_#000000] transition'>
 
       <Link href={`/blogs/${id}`}>
-      <Image src={image} alt='' width={400} height={400} className='border-b h-[200px] object-center object-cover border-black'/>
+      <Image src={image} alt='' width={400} height={400} className='border-b h-[200px] object-center object-cover border-black' unoptimized={image?.startsWith('data:')}/>
       </Link>
       <p className='ml-5 mt-5 px-3 inline-block bg-black text-white text-xs sm:text-sm'>{category}</p>
 

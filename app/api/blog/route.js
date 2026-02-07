@@ -1,9 +1,7 @@
 import { ConnectDB } from "@/lib/config/db";
 import BlogModel from "@/lib/model/BlogModel";
-import { writeFile } from "fs/promises";
 import { applyCORS, handleCORSPreflight, verifyCORS } from "@/lib/cors";
 const { NextResponse } = require("next/server");
-const fs = require('fs/promises')
 
 let isConnected = false;
 
@@ -64,23 +62,21 @@ export async function POST(request) {
         await LoadDB();
 
         const formData = await request.formData()
-        const timeStamp = Date.now();
 
         const image = formData.get('image');
         const imageByteData = await image.arrayBuffer()
         const buffer = Buffer.from(imageByteData)
-        const path = `./public/${timeStamp}_${image.name}`
-
-        await writeFile(path, buffer);
-
-        const imgUrl = `/${timeStamp}_${image.name}`
+        // Store image as base64 data URL in MongoDB (works on all platforms including Vercel)
+        const base64 = buffer.toString('base64')
+        const mimeType = image.type || 'image/jpeg'
+        const imgUrl = `data:${mimeType};base64,${base64}`
 
         const blogData = {
             title: `${formData.get('title')}`,
             description: `${formData.get('description')}`,
             category: `${formData.get('category')}`,
             author: `${formData.get('author')}`,
-            image: `${imgUrl}`,
+            image: imgUrl,
             authorImg: `${formData.get('authorImg')}`
         }
 
@@ -121,17 +117,12 @@ export async function PUT(request) {
         // Check if new image is provided
         const image = formData.get('image')
         if (image && image.size > 0) {
-            // Delete old image
-            fs.unlink(`./public${blog.image}`, () => {})
-            
-            // Save new image
-            const timeStamp = Date.now();
+            // Convert new image to base64 data URL
             const imageByteData = await image.arrayBuffer()
             const buffer = Buffer.from(imageByteData)
-            const path = `./public/${timeStamp}_${image.name}`
-
-            await writeFile(path, buffer);
-            imgUrl = `/${timeStamp}_${image.name}`
+            const base64 = buffer.toString('base64')
+            const mimeType = image.type || 'image/jpeg'
+            imgUrl = `data:${mimeType};base64,${base64}`
         }
 
         const blogData = {
@@ -169,9 +160,6 @@ export async function DELETE(request){
 
     try {
         const id = await request.nextUrl.searchParams.get('id')
-        const blog = await BlogModel.findById(id);
-
-        fs.unlink(`./public${blog.image}`, () => {})
         await BlogModel.findByIdAndDelete(id)
         
         const response = NextResponse.json({msg: 'Blog Deleted'})
